@@ -119,6 +119,38 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    fringe=util.Queue()
+
+
+    Starting_StateName = problem.getStartState()
+    Starting_State=(Starting_StateName , [] , 0)              # State Structure is :(state_name,state_path,state_cost)
+                                                               # that we made it
+    fringe.push(Starting_State)
+    closed=set()
+    SeenNode=set()                                              # an array of seen nodes  in order to avoid duplicate node in fringe
+
+    SeenNode.add(Starting_StateName)
+
+
+
+    while not fringe.isEmpty():
+        (Expanded_StateName,Expanded_StatePath,Expanded_StateCost)= fringe.pop()
+        if  Expanded_StateName in SeenNode:
+            if  Expanded_StateName in closed:
+               pass
+            else:
+                closed.add(Expanded_StateName)
+                if(problem.isGoalState(Expanded_StateName)):              # gets a name
+                    return Expanded_StatePath
+                for StateName , StateAction , StateCost in problem.getSuccessors(Expanded_StateName):   # an array of 3 part tuples with data structure like: (near_state_name,packman_action,state_path_cost)
+                    add_StatePath = Expanded_StatePath + [StateAction]
+                    add_StateCost = Expanded_StateCost + StateCost
+                    add_State=(StateName,add_StatePath,add_StateCost)     # translates getSuccessor() output to our state data type
+                    fringe.push(add_State)
+                    SeenNode.add(StateName)
+
+    return ["Error! Can't find the Goal State!"]
+
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
