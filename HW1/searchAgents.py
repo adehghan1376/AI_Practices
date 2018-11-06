@@ -483,7 +483,7 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
-
+        return search.aStarSearch(problem)              #choosing a* becuse it is complete
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
@@ -519,7 +519,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
-
+        return self.food [x][y]                     # finding the food:returns true if there is  food in (x,y)
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
