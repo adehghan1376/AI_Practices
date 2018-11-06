@@ -199,6 +199,58 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    fringe=util.PriorityQueue()
+
+    Starting_StateName = problem.getStartState()
+    Starting_State=(Starting_StateName , [] , 0)              # State Structure is :(state_name,state_path,state_cost)
+                                                               # that we made it
+
+
+    SeenNodeCost={}                                                              # Dictionary -->cost of SeenNode
+
+    closed=set()                                                             # an array --> name of already expanded nodes
+
+    fringe.push(Starting_State,heuristic(Starting_StateName,problem))                              # starting_State with priority=0
+
+    SeenNodeCost[Starting_StateName]=heuristic(Starting_StateName,problem)                   # cost of SeenNode--> Starting_StateName at first is 0
+
+
+    while not fringe.isEmpty():
+        (Expanded_StateName,Expanded_StatePath,Expanded_StateCost)= fringe.pop()
+        if  Expanded_StateName in closed:
+            pass
+
+        else:
+            closed.add(Expanded_StateName)
+            SeenNodeCost[Expanded_StateName]=Expanded_StateCost
+            if(problem.isGoalState(Expanded_StateName)):              # gets a name
+                return Expanded_StatePath
+            for StateName , StateAction , StateCost in problem.getSuccessors(Expanded_StateName):   # an array of 3 part tuples with data structure like: (near_state_name,packman_action,state_path_cost)
+                add_StatePath = Expanded_StatePath + [StateAction]
+                add_StateCost = Expanded_StateCost + StateCost
+                add_State=(StateName,add_StatePath,add_StateCost)     # translates getSuccessor() output to our state data type
+                fringe.push(add_State,add_StateCost +  heuristic(StateName,problem))
+
+
+
+
+
+            """                # for managing the duplication on  seen node cost
+            try:             #if seennodecost[startname].isset()
+                if SeenNodeCost[StateName]> add_StateCost +  heuristic(StateName,problem):
+                    fringe.push(add_State,add_StateCost +  heuristic(StateName,problem))
+
+
+            except:
+                    fringe.push(add_State,add_StateCost +  heuristic(StateName,problem))
+                SeenNodeCost[StateName]=add_StateCost +  heuristic(StateName,problem)"""
+
+
+
+
+    return ["Error! Can't find the Goal State!"]
+
+
     util.raiseNotDefined()
 
 
